@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Image } from 'react-native';
 import type {PropsWithChildren} from 'react';
@@ -19,11 +17,11 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+} from 'react-native/Libraries/NewAppScreen'; //Importing components for environment setup
 
 type SectionProps = PropsWithChildren<{
   title: string;
-}>;
+}>; //props type
 
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -49,14 +47,14 @@ function Section({children, title}: SectionProps): JSX.Element {
       </Text>
     </View>
   );
-}
+} // View rendering with title and content available
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }; //checking for darkmode on device and adjusting
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -78,7 +76,7 @@ function App(): JSX.Element {
 </ScrollView>
     </SafeAreaView>
   );
-}
+}  //adding content to main screen
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -97,6 +95,6 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
+}); //adjusting styles and sizes
 
-export default App;
+export default App; //exporting for use
