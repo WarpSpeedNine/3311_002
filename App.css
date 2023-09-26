@@ -7,7 +7,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+} //Styles for centering and aligning content
 
 .slider {
   -webkit-appearance: none;
@@ -16,7 +16,7 @@
   border-radius: 5px;
   background: #d3d3d3;
   outline: none;
-}
+} //removing default appearance, customizing slider appearance
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -26,7 +26,7 @@
   border-radius: 50%;
   background: #4caf50;
   cursor: pointer;
-}
+} //remove default, set custom handle appearance
 
 .slider::-webkit-slider-runnable-track {
   background: linear-gradient(
@@ -40,7 +40,7 @@
     #ffeb3b 75%,
     #ffeb3b 100%
   );
-}
+} 
 
 .slider::-moz-range-track {
   background: linear-gradient(
@@ -54,4 +54,4 @@
     #ffeb3b 75%,
     #ffeb3b 100%
   );
-}
+} //assigning colors to slider
