@@ -1,8 +1,8 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState } from "react"; //Importing CSS style
 
 function App() {
-  const [value, setValue] = useState(50);
+  const [value, setValue] = useState(50); //Initializing slider value
 
   return (
     <div className="slider-container">
@@ -28,6 +28,6 @@ function App() {
       {value === 100 && <span>Pro</span>}
     </div>
   );
-}
+} //Assigning text value to each section of slider
 
-export default App;
+export default App; //exporting to run
