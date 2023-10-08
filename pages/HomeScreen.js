@@ -17,8 +17,6 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.button} onPress={() => {/* Handle "Routines" button press */}}>
                 <Text style={styles.buttonText}>Routines</Text>
             </TouchableOpacity>
-
-                <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
             
         </View>
     );
