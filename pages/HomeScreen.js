@@ -29,13 +29,15 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'black',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
+      paddingTop:50,
     },
     header: {
-      fontSize: 24,
+      fontSize: 36,
       fontWeight: 'bold',
       color: 'white',
       marginBottom: 50,  // Adds some space below the header
+      fontFamily:'Copperplate'
     },
     button: {
       backgroundColor: 'transparent',  // Basic button color. You can choose anything.
