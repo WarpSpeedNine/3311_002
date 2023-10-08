@@ -4,7 +4,7 @@ import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Fitness Tracker</Text>
+            <Text style={styles.header}>FITNESS TRACKER</Text>
 
             <TouchableOpacity style={styles.button} onPress={() => {/*Handle Button Press*/}}>
                 <Text style={styles.buttonText}>History</Text>
@@ -38,16 +38,19 @@ const styles = StyleSheet.create({
       marginBottom: 50,  // Adds some space below the header
     },
     button: {
-      backgroundColor: 'gray',  // Basic button color. You can choose anything.
+      backgroundColor: 'transparent',  // Basic button color. You can choose anything.
       padding: 10,
       marginVertical: 10,  // Adds space between buttons
       width: 200,  // Fixed button width
       alignItems: 'center',  // Center the text inside the button
       borderRadius: 8,  // Rounded corners
+      borderWidth: 1,  
+      borderColor: '#00008b', 
     },
     buttonText: {
-      color: 'white',
-      fontSize: 18,
+      color: '#00008b',
+      fontSize: 25,
+      fontWeight: 'bold',
     },
   });
 
