@@ -6,7 +6,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Text style={styles.header}>FITNESS TRACKER</Text>
 
-            <TouchableOpacity style={styles.button} onPress={() => {/*Handle Button Press*/}}>
+            <TouchableOpacity style={styles.button} onPress={() => {/*Will go to Calendar (History) page*/}}>
                 <Text style={styles.buttonText}>History</Text>
             </TouchableOpacity>
 
@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.buttonText}>Manual</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => {/* Handle "Routines" button press */}}>
+            <TouchableOpacity style={styles.button} onPress={() => {/*Will go to 'Routines' page */}}>
                 <Text style={styles.buttonText}>Routines</Text>
             </TouchableOpacity>
             
@@ -34,16 +34,16 @@ const styles = StyleSheet.create({
       fontSize: 36,
       fontWeight: 'bold',
       color: 'white',
-      marginBottom: 50,  // Adds some space below the header
+      marginBottom: 50,  // Adds space below header
       fontFamily:'Copperplate'
     },
     button: {
-      backgroundColor: 'transparent',  // Basic button color. You can choose anything.
+      backgroundColor: 'transparent',  
       padding: 10,
       marginVertical: 10,  // Adds space between buttons
       width: 200,  // Fixed button width
-      alignItems: 'center',  // Center the text inside the button
-      borderRadius: 8,  // Rounded corners
+      alignItems: 'center',  // Centers text inside the button
+      borderRadius: 8,  // Rounds corners
       borderWidth: 1,  
       borderColor: '#00008b', 
     },

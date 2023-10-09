@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
 const LogWorkoutScreen = ({ navigation }) => {
-  const [exercises, setExercises] = useState([]);  // State to hold selected exercises
+  const [exercises, setExercises] = useState([]);  // State to hold selected exercises, future function to add to list
 
   return (
     <View style={[styles.container, exercises.length === 0 ? styles.containerStart : styles.containerCenter]}>
@@ -13,11 +13,7 @@ const LogWorkoutScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
 
-      <FlatList
-        data={exercises}
-        renderItem={({ item }) => <Text style={styles.exerciseText}>{item}</Text>}
-        keyExtractor={(item) => item}
-      />
+     
     </View>
   );
 };
