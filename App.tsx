@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './pages/HomeScreen';
-import DetailsScreen from './pages/DetailScreen';
 import LogWorkoutScreen from './pages/LogWorkoutScreen';
 import ExercisesScreen from './pages/ExercisesScreen';
 
@@ -17,7 +16,6 @@ function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Log Workout" component={LogWorkoutScreen} />
           <Stack.Screen name="Exercises" component={ExercisesScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
