@@ -1,1 +1,1 @@
-{"name":"FitnessTrackerApp","version":"0.0.1","private":true,"scripts":{"start":"node node_modules/react-native/local-cli/cli.js start"},"dependencies":{"react-native":"0.72.4"}}
+{"name":"FitnessTrackerApp","version":"0.0.1","private":true,"scripts":{"start":"node node_modules/react-native/local-cli/cli.js start"},"dependencies":{"react-native":"0.72.4"},"devDependencies":{"metro-config":"^0.79.1"}}

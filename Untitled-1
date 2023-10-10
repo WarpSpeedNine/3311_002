@@ -1,0 +1,5 @@
+-- database: /workspaces/3311_002/Database.db
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+SELECT * FROM "Type";
