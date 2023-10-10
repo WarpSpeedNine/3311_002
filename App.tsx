@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,6 +22,7 @@ function App() {
       </NavigationContainer>
     </SafeAreaProvider>
   );
-}
+} // View rendering with title and content available
+
 
 export default App;
