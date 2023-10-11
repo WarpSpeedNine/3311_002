@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.buttonText}>Manual</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => {/*Will go to 'Routines' page */}}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('My Routines')}>
                 <Text style={styles.buttonText}>Routines</Text>
             </TouchableOpacity>
             
