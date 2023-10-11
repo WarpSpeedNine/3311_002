@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const LogWorkoutScreen = ({ navigation }) => {
   const [exercises, setExercises] = useState([]);  // State to hold selected exercises, future function to add to list

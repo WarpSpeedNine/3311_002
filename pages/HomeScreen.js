@@ -6,7 +6,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Text style={styles.header}>FITNESS TRACKER</Text>
 
-            <TouchableOpacity style={styles.button} onPress={() => {/*Will go to Calendar (History) page*/}}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('History')}>
                 <Text style={styles.buttonText}>History</Text>
             </TouchableOpacity>
 
