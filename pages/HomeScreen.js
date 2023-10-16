@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation }) => {    /* Creates Home Screen component with three main buttons */
     return (
         <View style={styles.container}>
             <Text style={styles.header}>FITNESS TRACKER</Text>
@@ -22,12 +22,12 @@ const HomeScreen = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  /* Creates Various styles reffered in this page */
     container: {
       flex: 1,
       backgroundColor: 'black',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: 'flex-start', /* Aligns components to center top */
       paddingTop:50,
     },
     header: {

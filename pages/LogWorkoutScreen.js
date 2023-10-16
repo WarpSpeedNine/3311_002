@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LogWorkoutScreen = ({ navigation }) => {
+const LogWorkoutScreen = ({ navigation }) => { /* Basic Log Workout Screen Component using navigation component */
   const [exercises, setExercises] = useState([]);  // State to hold selected exercises, future function to add to list
 
   return (
-    <View style={[styles.container, exercises.length === 0 ? styles.containerStart : styles.containerCenter]}>
+    <View style={[styles.container, exercises.length === 0 ? styles.containerStart : styles.containerCenter]}> /* Designed to move button down once screen populates with exercises */
        <TouchableOpacity 
         style={styles.button} 
         onPress={() => navigation.navigate('Exercises')}>
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         paddingTop: 50,  // some padding from the top
       },
       containerCenter: {
-        justifyContent: 'center',  // centers children vertically
+        justifyContent: 'center',  // centers children on vertical axis, in center not at top
       },
     exerciseText: {
       color: '#00008b', // Dark blue

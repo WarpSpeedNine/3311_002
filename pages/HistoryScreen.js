@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const HistoryScreen = ({ navigation }) => {
+const HistoryScreen = ({ navigation }) => { /* Adds History Screen Component */
   return (
     <View style={styles.container}>
         <Text style={styles.plainText}> Insert Calendar Here </Text>
@@ -10,7 +10,7 @@ const HistoryScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
     container: {
       flex: 1,
       backgroundColor: 'black',

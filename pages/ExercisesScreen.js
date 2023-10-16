@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Button} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const ExercisesScreen = () => {
+const ExercisesScreen = () => { /* Creates ExercisesScreen Component */
   const [selectedType, setType] = useState(null);
   const [selectedMuscleGroup, setMuscleGroup] = useState(null);
   const [selectedExercise, setExercise] = useState(null);
 
-  // For Testing Drop Downs
+  // Temproary Data For Testing Drop Downs
   const types = ['Free Weights', 'Machine', 'Calisthenic', 'All'];
   const muscleGroups = ['Arms', 'Chest', 'Legs', 'Back'];
   const exercises = ['Exercise 1', 'Exercise 2', 'Exercise 3'];
