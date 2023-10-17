@@ -5,7 +5,7 @@ const LogWorkoutScreen = ({ navigation }) => { /* Basic Log Workout Screen Compo
   const [exercises, setExercises] = useState([]);  // State to hold selected exercises, future function to add to list
 
   return (
-    <View style={[styles.container, exercises.length === 0 ? styles.containerStart : styles.containerCenter]}> /* Designed to move button down once screen populates with exercises */
+    <View style={[styles.container, exercises.length === 0 ? styles.containerStart : styles.containerCenter]}> 
        <TouchableOpacity 
         style={styles.button} 
         onPress={() => navigation.navigate('Exercises')}>
