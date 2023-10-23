@@ -20,7 +20,7 @@ function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="History" component={HistoryScreen}/>
           <Stack.Screen name="Log Workout" component={LogWorkoutScreen} />
-          <Stack.Screen name="My Routines" component={RoutinesScreen}/>
+          <Stack.Screen name="Routines" component={RoutinesScreen}/>
           <Stack.Screen name="Exercises" component={ExercisesScreen} />
         </Stack.Navigator>
       </NavigationContainer>
