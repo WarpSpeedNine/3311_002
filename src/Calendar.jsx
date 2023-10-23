@@ -53,11 +53,11 @@ export function Calendar() {
         <Text style={styles.calendarHeader}>{getFormattedDate(currentMonth)}</Text>
 
         <TouchableOpacity onPress={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}>
-          <Text>Previous</Text>
+          <Text style={styles.prev_next_buttons}>Prev</Text>
         </TouchableOpacity>
         
         <TouchableOpacity onPress={() => setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}>
-          <Text>Next</Text>
+          <Text style={styles.prev_next_buttons}>Next</Text>
         </TouchableOpacity>
 
         {Array.from({ length: daysInMonth }).map((_, idx) => {
@@ -102,7 +102,9 @@ const styles = StyleSheet.create({
     calendarContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      marginTop: 200,
+      marginTop: 50,
+      alignItems: 'center', // Center the items horizontally within the container
+      width: '100%',  // Ensure the container takes up the full width
       // Used margins instead of gap because we are in React Native.
     },
     day: {
@@ -116,8 +118,8 @@ const styles = StyleSheet.create({
       // React Native doesn't support hover. USed TouchableOpacity above b/c I'm familiar with it for now, may be changed if needed
     },
     contentContainer: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
+      flexDirection: 'column',
+      alignItems: 'center',
       
     },
     workoutData: {
@@ -136,8 +138,8 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.384,
       shadowRadius: 10,
       elevation: 5, // for Android
-      marginTop: 300,
-      marginLeft: 75,
+      marginTop: 50,
+      marginLeft: 0,
     },
     calendarHeader: {
       fontSize: 24, // Convert em to approximate pixel value
@@ -146,9 +148,12 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       color: '#013955',
     },
+    prev_next_buttons: {
+      color: '#00008b', // Dark blue
+      fontSize: 25,
+      fontWeight: 'bold',
+    }
   });
 
 export default Calendar;
 
-// Log to console
-console.log('Hello console')

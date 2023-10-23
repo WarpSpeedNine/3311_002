@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Calendar } from './src/Calendar';
+import { Calendar } from '../src/Calendar';
 
 
 const HistoryScreen = ({ navigation }) => { /* Adds History Screen Component */
   return (
     <View style={styles.container}>
-        <Text style={styles.plainText}> Calendar Module Below ( hopefully!) </Text>
+        <Text style={styles.plainText}> Please select a date to view workout History. </Text>
         <Calendar />
     </View>
   );
