@@ -103,9 +103,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       flexWrap: 'wrap',
       marginTop: 50,
-      alignItems: 'center', // Center the items horizontally within the container
-      width: '100%',  // Ensure the container takes up the full width
-      // Used margins instead of gap because we are in React Native.
+      alignItems: 'center', 
+      width: '100%',  
     },
     day: {
       width: 40,
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
       margin: 5,
       borderWidth: 1,
       borderColor: '#76afcfb0',
-      // React Native doesn't support hover. USed TouchableOpacity above b/c I'm familiar with it for now, may be changed if needed
+
     },
     contentContainer: {
       flexDirection: 'column',
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     workoutData: {
       padding: 25,
       color: '#023249',
-      fontSize: 20, // Convert em to approximate pixel value
+      fontSize: 20, 
       fontWeight: 'bold',
       backgroundColor: '#bfe0f9',
       borderWidth: 1,
@@ -137,19 +136,19 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 0 },
       shadowOpacity: 0.384,
       shadowRadius: 10,
-      elevation: 5, // for Android
+      elevation: 5, 
       marginTop: 50,
       marginLeft: 0,
     },
     calendarHeader: {
-      fontSize: 24, // Convert em to approximate pixel value
+      fontSize: 24, 
       fontWeight: 'bold',
       transform: [{ translateY: -60 }],
       textAlign: 'center',
       color: '#013955',
     },
     prev_next_buttons: {
-      color: '#00008b', // Dark blue
+      color: '#00008b', 
       fontSize: 25,
       fontWeight: 'bold',
     }
