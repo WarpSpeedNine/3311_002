@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {    /* Creates Home Screen component wit
                 <Text style={styles.buttonText}>Manual</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('My Routines')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Routines')}>
                 <Text style={styles.buttonText}>Routines</Text>
             </TouchableOpacity>
             
