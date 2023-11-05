@@ -38,7 +38,7 @@ const ExercisesScreen = () => {
       tx.executeSql(
         'SELECT * FROM Type',
         [],
-        (tx, results) => {
+        (_, results) => {
           const rows = results.rows;
           let data = [];
 
@@ -60,7 +60,7 @@ const ExercisesScreen = () => {
       tx.executeSql(
         'SELECT * FROM Muscle_Group',
         [],
-        (tx, results) => {
+        (_, results) => {
           const rows = results.rows;
           let data = [];
 
@@ -72,7 +72,7 @@ const ExercisesScreen = () => {
         },
         error => {
           console.error(
-            'Error fetching muscle groups from the database',
+            'Error fetching MUSCLE GROUPS from the database',
             error,
           );
         },
