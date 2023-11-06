@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Button} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {db} from '../DB';
+
 const ExercisesScreen = () => {
   /* Creates ExercisesScreen Component */
   const [selectedType, setType] = useState(null);
