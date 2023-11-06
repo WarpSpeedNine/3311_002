@@ -14,15 +14,17 @@ const ExercisesScreen = () => {
   useEffect(() => {
     let databaseInstance;
 
-    db.open()
-      .then(database => {
-        databaseInstance = database;
-        fetchTypes(databaseInstance);
-        fetchMuscleGroups(databaseInstance);
-      })
-      .catch(error => {
-        console.error('Error OPENING database:', error);
-      });
+    const loadDatabaseAsync = async () => {
+      try {
+        databaseInstance = await db.open();
+        await fetchTypes(databaseInstance);
+        await fetchMuscleGroups(databaseInstance);
+      } catch (error) {
+        console.error('Error opening database:', error);
+      }
+    };
+
+    loadDatabaseAsync();
 
     return () => {
       if (databaseInstance) {
@@ -33,51 +35,66 @@ const ExercisesScreen = () => {
     };
   }, []);
 
-  const fetchTypes = databaseInstance => {
-    databaseInstance.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Type',
-        [],
-        (_, results) => {
-          const rows = results.rows;
-          let data = [];
-
-          for (let i = 0; i < rows.length; i++) {
-            data.push({label: rows.item(i).Type, value: rows.item(i).T_ID});
-          }
-
-          setTypes(data);
-        },
-        error => {
-          console.error('Error fetching types from the database', error);
-        },
-      );
-    });
+  const fetchTypes = async databaseInstance => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM Type',
+            [],
+            (_, results) => {
+              const rows = results.rows;
+              let data = [];
+              for (let i = 0; i < rows.length; i++) {
+                types.push({
+                  label: rows.item(i).Type,
+                  value: rows.item(i).T_ID,
+                });
+              }
+              resolve(data);
+            },
+            (_, error) => {
+              reject(error);
+              return false;
+            },
+          );
+        });
+      });
+      setTypes(data);
+    } catch (error) {
+      console.error('Error fetching types from the database', error);
+    }
   };
 
-  const fetchMuscleGroups = databaseInstance => {
-    databaseInstance.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Muscle_Group',
-        [],
-        (_, results) => {
-          const rows = results.rows;
-          let data = [];
-
-          for (let i = 0; i < rows.length; i++) {
-            data.push({label: rows.item(i).Area, value: rows.item(i).MG_ID});
-          }
-
-          setMuscleGroups(data);
-        },
-        error => {
-          console.error(
-            'Error fetching MUSCLE GROUPS from the database',
-            error,
+  const fetchMuscleGroups = async databaseInstance => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM Muscle_Group',
+            [],
+            (_, results) => {
+              const rows = results.rows;
+              let muscleGroups = [];
+              for (let i = 0; i < rows.length; i++) {
+                muscleGroups.push({
+                  label: rows.item(i).Area,
+                  value: rows.item(i).MG_ID,
+                });
+              }
+              resolve(muscleGroups);
+            },
+            (_, error) => {
+              reject(error);
+              return false;
+            },
           );
-        },
-      );
-    });
+        });
+      });
+      setMuscleGroups(data);
+    } catch (error) {
+      console.error('Error fetching muscle groups from the database', error);
+    }
   };
 
   /*
