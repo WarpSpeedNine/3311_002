@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centers text inside the button
     borderRadius: 8, // Rounds corners
     borderWidth: 1,
-    borderColor: '#00008b',
+    borderColor: '#FFA500',
   },
   buttonText: {
-    color: '#00008b',
+    color: '#FFA500',
     fontSize: 25,
     fontWeight: 'bold',
   },

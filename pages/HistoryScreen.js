@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   plainText: {
-    color: '#00008b', // Dark blue
+    color: '#FFA500', // Dark blue
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,

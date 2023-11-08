@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   plainText: {
-    color: '#00008b', // Dark blue
+    color: '#FFA500', // Dark blue
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centers text inside the button
     borderRadius: 8, // Rounds corners
     borderWidth: 1,
-    borderColor: '#00008b',
+    borderColor: '#FFA500',
   },
   buttonText: {
-    color: '#00008b',
+    color: '#FFA500',
     fontSize: 25,
     fontWeight: 'bold',
   },
