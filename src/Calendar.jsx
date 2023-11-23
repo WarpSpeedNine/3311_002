@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     color: '#013955',
   },
   prev_next_buttons: {
-    color: '#00008b',
+    color: '#FFA500',
     fontSize: 25,
     fontWeight: 'bold',
   },

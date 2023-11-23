@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // centers children on vertical axis, in center not at top
   },
   exerciseText: {
-    color: '#00008b', // Dark blue
+    color: '#FFA500', // Dark blue
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15, // Some space between exercises
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20, // Some space above the button
     borderWidth: 1,
-    borderColor: '#00008b',
+    borderColor: '#FFA500',
     alignItems: 'center',
     borderRadius: 8,
   },
   buttonText: {
-    color: '#00008b', // Dark blue
+    color: '#FFA500', // Dark blue
     fontSize: 25,
     fontWeight: 'bold',
   },
