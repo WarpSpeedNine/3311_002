@@ -44,24 +44,24 @@ const ExercisesScreen = () => {
             'SELECT * FROM Type',
             [],
             (_, results) => {
-              const rows = results.rows;
-              let data = [];
+              const rows = results.rows.raw(); // Convert rows to a standard JavaScript array
+              let newTypes = []; // Initialize a new array to hold the transformed data
               for (let i = 0; i < rows.length; i++) {
-                types.push({
-                  label: rows.item(i).Type,
-                  value: rows.item(i).T_ID,
+                newTypes.push({
+                  label: rows[i].Type,
+                  value: rows[i].T_ID,
                 });
               }
-              resolve(data);
+              resolve(newTypes); // Resolve the promise with the new array
             },
             (_, error) => {
-              reject(error);
+              reject(error); // Reject the promise on error
               return false;
             },
           );
         });
       });
-      setTypes(data);
+      setTypes(data); // Update the state with the fetched data
     } catch (error) {
       console.error('Error fetching types from the database', error);
     }
@@ -75,26 +75,26 @@ const ExercisesScreen = () => {
             'SELECT * FROM Muscle_Group',
             [],
             (_, results) => {
-              const rows = results.rows;
-              let muscleGroups = [];
+              const rows = results.rows.raw(); // Convert rows to a standard JavaScript array
+              let newMuscleGroups = []; // Initialize a new array to hold the transformed data
               for (let i = 0; i < rows.length; i++) {
-                muscleGroups.push({
-                  label: rows.item(i).Area,
-                  value: rows.item(i).MG_ID,
+                newMuscleGroups.push({
+                  label: rows[i].Area,
+                  value: rows[i].MG_ID,
                 });
               }
-              resolve(muscleGroups);
+              resolve(newMuscleGroups); // Resolve the promise with the new array
             },
             (_, error) => {
-              reject(error);
+              reject(error); // Reject the promise on error
               return false;
             },
           );
         });
       });
-      setMuscleGroups(data);
+      setMuscleGroups(data); // Update the state with the fetched data
     } catch (error) {
-      console.error('Error fetching muscle groups from the database', error);
+      console.error('Error - fetching muscle groups from the database', error);
     }
   };
 
