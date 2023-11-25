@@ -1,36 +1,127 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {db} from '../Database';
+import {db} from '../DB';
 
 const ExercisesScreen = () => {
   /* Creates ExercisesScreen Component */
   const [selectedType, setType] = useState(null);
   const [selectedMuscleGroup, setMuscleGroup] = useState(null);
   const [selectedExercise, setExercise] = useState(null);
+  const [types, setTypes] = useState([]);
+  const [muscleGroups, setMuscleGroups] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
+  useEffect(() => {
+    let databaseInstance;
+
+    const loadDatabaseAsync = async () => {
+      try {
+        databaseInstance = await db.open();
+        await fetchTypes(databaseInstance);
+        await fetchMuscleGroups(databaseInstance);
+      } catch (error) {
+        console.error('Error opening database:', error);
+      }
+    };
+
+    loadDatabaseAsync();
+
+    return () => {
+      if (databaseInstance) {
+        databaseInstance.close().catch(error => {
+          console.error('Error closing the database', error);
+        });
+      }
+    };
+  }, []);
+
+  const fetchTypes = async databaseInstance => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM Type',
+            [],
+            (_, results) => {
+              const rows = results.rows.raw(); // Convert rows to a standard JavaScript array
+              let newTypes = []; // Initialize a new array to hold the transformed data
+              for (let i = 0; i < rows.length; i++) {
+                newTypes.push({
+                  label: rows[i].Type,
+                  value: rows[i].T_ID,
+                });
+              }
+              resolve(newTypes); // Resolve the promise with the new array
+            },
+            (_, error) => {
+              reject(error); // Reject the promise on error
+              return false;
+            },
+          );
+        });
+      });
+      setTypes(data); // Update the state with the fetched data
+    } catch (error) {
+      console.error('Error fetching types from the database', error);
+    }
+  };
+
+  const fetchMuscleGroups = async databaseInstance => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM Muscle_Group',
+            [],
+            (_, results) => {
+              const rows = results.rows.raw(); // Convert rows to a standard JavaScript array
+              let newMuscleGroups = []; // Initialize a new array to hold the transformed data
+              for (let i = 0; i < rows.length; i++) {
+                newMuscleGroups.push({
+                  label: rows[i].Area,
+                  value: rows[i].MG_ID,
+                });
+              }
+              resolve(newMuscleGroups); // Resolve the promise with the new array
+            },
+            (_, error) => {
+              reject(error); // Reject the promise on error
+              return false;
+            },
+          );
+        });
+      });
+      setMuscleGroups(data); // Update the state with the fetched data
+    } catch (error) {
+      console.error('Error - fetching muscle groups from the database', error);
+    }
+  };
+
+  /*
   // Temproary Data For Testing Drop Downs
   const types = ['Free Weights', 'Machine', 'Calisthenic', 'All'];
   const muscleGroups = ['Arms', 'Chest', 'Legs', 'Back'];
   const exercises = ['Exercise 1', 'Exercise 2', 'Exercise 3'];
+*/
 
   return (
     <View style={styles.container}>
       <Picker
         selectedValue={selectedType}
-        onValueChange={value => setType(value)}
+        onValueChange={(itemValue, itemIndex) => setType(itemValue)}
         style={styles.picker}>
-        {types.map(type => (
-          <Picker.Item key={type} label={type} value={type} />
+        {types.map((type, index) => (
+          <Picker.Item key={index} label={type.label} value={type.value} />
         ))}
       </Picker>
 
       <Picker
         selectedValue={selectedMuscleGroup}
-        onValueChange={value => setMuscleGroup(value)}
+        onValueChange={(itemValue, itemIndex) => setMuscleGroup(itemValue)}
         style={styles.picker}>
-        {muscleGroups.map(group => (
-          <Picker.Item key={group} label={group} value={group} />
+        {muscleGroups.map((group, index) => (
+          <Picker.Item key={index} label={group.label} value={group.value} />
         ))}
       </Picker>
 
