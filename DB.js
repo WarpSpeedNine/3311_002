@@ -13,27 +13,27 @@ const openDatabase = async () => {
     });
     console.log('Database is now opened!');
 
-    // Test query to check the existence of the Type table
-    const result = await new Promise((resolve, reject) => {
-      db.transaction(tx => {
-        tx.executeSql(
-          'SELECT * FROM Type',
-          [],
-          (_, results) => {
-            console.log(
-              'Test query executed, rows returned:',
-              results.rows.length,
-            );
-            resolve(results);
-          },
-          (_, error) => {
-            console.error('Test query failed:', error);
-            reject(error);
-            return false;
-          },
-        );
-      });
-    });
+    // // Test query to check the existence of the Type table
+    // const result = await new Promise((resolve, reject) => {
+    //   db.transaction(tx => {
+    //     tx.executeSql(
+    //       'SELECT * FROM Type',
+    //       [],
+    //       (_, results) => {
+    //         console.log(
+    //           'Test query executed, rows returned:',
+    //           results.rows.length,
+    //         );
+    //         resolve(results);
+    //       },
+    //       (_, error) => {
+    //         console.error('Test query failed:', error);
+    //         reject(error);
+    //         return false;
+    //       },
+    //     );
+    //   });
+    // });
 
     return db;
   } catch (error) {

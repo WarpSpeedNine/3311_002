@@ -11,15 +11,17 @@ const ExercisesScreen = () => {
   const [types, setTypes] = useState([]);
   const [muscleGroups, setMuscleGroups] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [databaseInstance, setDatabaseInstance] = useState(null);
 
   useEffect(() => {
-    let databaseInstance;
+    // let databaseInstance;
 
     const loadDatabaseAsync = async () => {
       try {
-        databaseInstance = await db.open();
-        await fetchTypes(databaseInstance);
-        await fetchMuscleGroups(databaseInstance);
+        const dbInstance = await db.open();
+        setDatabaseInstance(dbInstance);
+        await fetchTypes(dbInstance);
+        await fetchMuscleGroups(dbInstance);
       } catch (error) {
         console.error('Error opening database:', error);
       }
@@ -35,6 +37,28 @@ const ExercisesScreen = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const fetchExercisesIfSelected = async () => {
+      console.log(
+        'Fetching exercises for Type:',
+        selectedType,
+        'and Muscle Group:',
+        selectedMuscleGroup,
+        ', Database Instance:',
+        databaseInstance,
+      );
+      if (selectedType && selectedMuscleGroup && databaseInstance) {
+        await fetchFilteredExercises(
+          databaseInstance,
+          selectedType,
+          selectedMuscleGroup,
+        );
+      }
+    };
+
+    fetchExercisesIfSelected();
+  }, [selectedType, selectedMuscleGroup, databaseInstance]);
 
   const fetchTypes = async databaseInstance => {
     try {
@@ -98,6 +122,47 @@ const ExercisesScreen = () => {
     }
   };
 
+  const fetchFilteredExercises = async (
+    databaseInstance,
+    selectedType,
+    selectedMuscleGroup,
+  ) => {
+    try {
+      console.log('fetch Filtered Exercises function is called now.');
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT Exercises.ID, Exercises.Name FROM Exercises WHERE Exercises.TypeID = ? AND Exercises.MGroupID = ?',
+            [selectedType, selectedMuscleGroup],
+            (_, results) => {
+              const rows = results.rows.raw();
+              let newExercises = [];
+              for (let i = 0; i < rows.length; i++) {
+                newExercises.push({
+                  label: rows[i].Name,
+                  value: rows[i].ID,
+                });
+              }
+              console.log('Fetched Exercises:', newExercises); // Remove Later if necessary
+              resolve(newExercises);
+            },
+            (_, error) => {
+              reject(error);
+              return false;
+            },
+          );
+        });
+      });
+      setExercises(data);
+      console.log('Updated Exercises State:', exercises); // Remove Later if necessary
+    } catch (error) {
+      console.error(
+        'Error fetching filtered exercises from the database',
+        error,
+      );
+    }
+  };
+
   /*
   // Temproary Data For Testing Drop Downs
   const types = ['Free Weights', 'Machine', 'Calisthenic', 'All'];
@@ -124,13 +189,17 @@ const ExercisesScreen = () => {
           <Picker.Item key={index} label={group.label} value={group.value} />
         ))}
       </Picker>
-
+      {console.log('Rendering Exercises:', exercises)}
       <Picker
         selectedValue={selectedExercise}
-        onValueChange={value => setExercise(value)}
+        onValueChange={itemValue => setExercise(itemValue)}
         style={styles.picker}>
-        {exercises.map(exercise => (
-          <Picker.Item key={exercise} label={exercise} value={exercise} />
+        {exercises.map((exercise, index) => (
+          <Picker.Item
+            key={index}
+            label={exercise.label}
+            value={exercise.value}
+          />
         ))}
       </Picker>
     </View>
