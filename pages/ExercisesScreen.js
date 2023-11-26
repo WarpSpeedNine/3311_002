@@ -27,6 +27,18 @@ const ExercisesScreen = () => {
 
     loadDatabaseAsync();
 
+    const fetchExercisesIfSelected = async () => {
+      if (selectedType && selectedMuscleGroup && databaseInstance) {
+        await fetchFilteredExercises(
+          selectedType,
+          selectedMuscleGroup,
+          databaseInstance,
+        );
+      }
+    };
+
+    fetchExercisesIfSelected();
+
     return () => {
       if (databaseInstance) {
         databaseInstance.close().catch(error => {
@@ -34,7 +46,7 @@ const ExercisesScreen = () => {
         });
       }
     };
-  }, []);
+  }, [selectedType, selectedMuscleGroup]);
 
   const fetchTypes = async databaseInstance => {
     try {
@@ -98,6 +110,44 @@ const ExercisesScreen = () => {
     }
   };
 
+  const fetchFilteredExercises = async (
+    databaseInstance,
+    selectedType,
+    selectedMuscleGroup,
+  ) => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT Exercises.ID, Exercises.Name FROM Exercises WHERE Exercises.TypeID = ? AND Exercises.MGroupID = ?',
+            [selectedType, selectedMuscleGroup],
+            (_, results) => {
+              const rows = results.rows.raw();
+              let newExercises = [];
+              for (let i = 0; i < rows.length; i++) {
+                newExercises.push({
+                  label: rows[i].Name,
+                  value: rows[i].ID,
+                });
+              }
+              resolve(newExercises);
+            },
+            (_, error) => {
+              reject(error);
+              return false;
+            },
+          );
+        });
+      });
+      setExercises(data);
+    } catch (error) {
+      console.error(
+        'Error fetching filtered exercises from the database',
+        error,
+      );
+    }
+  };
+
   /*
   // Temproary Data For Testing Drop Downs
   const types = ['Free Weights', 'Machine', 'Calisthenic', 'All'];
@@ -127,10 +177,14 @@ const ExercisesScreen = () => {
 
       <Picker
         selectedValue={selectedExercise}
-        onValueChange={value => setExercise(value)}
+        onValueChange={itemValue => setExercise(itemValue)}
         style={styles.picker}>
-        {exercises.map(exercise => (
-          <Picker.Item key={exercise} label={exercise} value={exercise} />
+        {exercises.map((exercise, index) => (
+          <Picker.Item
+            key={index}
+            label={exercise.label}
+            value={exercise.value}
+          />
         ))}
       </Picker>
     </View>
