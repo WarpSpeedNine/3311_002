@@ -14,11 +14,12 @@ const ExercisesScreen = () => {
   const [databaseInstance, setDatabaseInstance] = useState(null);
 
   useEffect(() => {
-    let databaseInstance;
+    // let databaseInstance;
 
     const loadDatabaseAsync = async () => {
       try {
         const dbInstance = await db.open();
+        setDatabaseInstance(dbInstance);
         await fetchTypes(dbInstance);
         await fetchMuscleGroups(dbInstance);
       } catch (error) {
@@ -44,6 +45,8 @@ const ExercisesScreen = () => {
         selectedType,
         'and Muscle Group:',
         selectedMuscleGroup,
+        ', Database Instance:',
+        databaseInstance,
       );
       if (selectedType && selectedMuscleGroup && databaseInstance) {
         await fetchFilteredExercises(
@@ -55,7 +58,7 @@ const ExercisesScreen = () => {
     };
 
     fetchExercisesIfSelected();
-  }, [selectedType, selectedMuscleGroup]);
+  }, [selectedType, selectedMuscleGroup, databaseInstance]);
 
   const fetchTypes = async databaseInstance => {
     try {
@@ -125,6 +128,7 @@ const ExercisesScreen = () => {
     selectedMuscleGroup,
   ) => {
     try {
+      console.log('fetch Filtered Exercises function is called now.');
       const data = await new Promise((resolve, reject) => {
         databaseInstance.transaction(tx => {
           tx.executeSql(
