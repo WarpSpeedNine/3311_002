@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 10,
     fontWeight: 'bold',
-    color: '#00008b',
+    color: '#FFA500',
   },
 });
 
