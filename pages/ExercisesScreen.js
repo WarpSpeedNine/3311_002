@@ -11,33 +11,22 @@ const ExercisesScreen = () => {
   const [types, setTypes] = useState([]);
   const [muscleGroups, setMuscleGroups] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [databaseInstance, setDatabaseInstance] = useState(null);
 
   useEffect(() => {
     let databaseInstance;
 
     const loadDatabaseAsync = async () => {
       try {
-        databaseInstance = await db.open();
-        await fetchTypes(databaseInstance);
-        await fetchMuscleGroups(databaseInstance);
+        const dbInstance = await db.open();
+        await fetchTypes(dbInstance);
+        await fetchMuscleGroups(dbInstance);
       } catch (error) {
         console.error('Error opening database:', error);
       }
     };
 
     loadDatabaseAsync();
-
-    const fetchExercisesIfSelected = async () => {
-      if (selectedType && selectedMuscleGroup && databaseInstance) {
-        await fetchFilteredExercises(
-          selectedType,
-          selectedMuscleGroup,
-          databaseInstance,
-        );
-      }
-    };
-
-    fetchExercisesIfSelected();
 
     return () => {
       if (databaseInstance) {
@@ -46,6 +35,26 @@ const ExercisesScreen = () => {
         });
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchExercisesIfSelected = async () => {
+      console.log(
+        'Fetching exercises for Type:',
+        selectedType,
+        'and Muscle Group:',
+        selectedMuscleGroup,
+      );
+      if (selectedType && selectedMuscleGroup && databaseInstance) {
+        await fetchFilteredExercises(
+          databaseInstance,
+          selectedType,
+          selectedMuscleGroup,
+        );
+      }
+    };
+
+    fetchExercisesIfSelected();
   }, [selectedType, selectedMuscleGroup]);
 
   const fetchTypes = async databaseInstance => {
@@ -130,6 +139,7 @@ const ExercisesScreen = () => {
                   value: rows[i].ID,
                 });
               }
+              console.log('Fetched Exercises:', newExercises); // Remove Later if necessary
               resolve(newExercises);
             },
             (_, error) => {
@@ -140,6 +150,7 @@ const ExercisesScreen = () => {
         });
       });
       setExercises(data);
+      console.log('Updated Exercises State:', exercises); // Remove Later if necessary
     } catch (error) {
       console.error(
         'Error fetching filtered exercises from the database',
@@ -174,7 +185,7 @@ const ExercisesScreen = () => {
           <Picker.Item key={index} label={group.label} value={group.value} />
         ))}
       </Picker>
-
+      {console.log('Rendering Exercises:', exercises)}
       <Picker
         selectedValue={selectedExercise}
         onValueChange={itemValue => setExercise(itemValue)}
