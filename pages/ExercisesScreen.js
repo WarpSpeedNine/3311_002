@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {db} from '../DB';
 
-const ExercisesScreen = () => {
+const ExercisesScreen = ({navigation}) => {
   /* Creates ExercisesScreen Component */
   const [selectedType, setType] = useState(null);
   const [selectedMuscleGroup, setMuscleGroup] = useState(null);
@@ -202,6 +202,16 @@ const ExercisesScreen = () => {
           />
         ))}
       </Picker>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.navigate('Log Workout', {
+            selectedExercise: selectedExercise,
+          })
+        }>
+        <Text style={styles.buttonText}>Add to Workout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -219,6 +229,21 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: 'bold',
     color: '#FFA500',
+  },
+  button: {
+    backgroundColor: 'transparent',
+    padding: 10,
+    marginVertical: 10, // Adds space between buttons
+    width: 200, // Fixed button width
+    alignSelf: 'center',
+    borderRadius: 8, // Rounds corners
+    borderWidth: 1,
+    borderColor: '#FFA500',
+  },
+  buttonText: {
+    color: '#FFA500', // Dark blue
+    fontSize: 25,
+    fontWeight: 'bold',
   },
 });
 
