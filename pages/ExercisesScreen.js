@@ -192,7 +192,12 @@ const ExercisesScreen = ({navigation}) => {
       {console.log('Rendering Exercises:', exercises)}
       <Picker
         selectedValue={selectedExercise}
-        onValueChange={itemValue => setExercise(itemValue)}
+        onValueChange={itemValue => {
+          const exerciseObject = exercises.find(
+            exercise => exercise.value === itemValue,
+          );
+          setExercise(exerciseObject);
+        }} //
         style={styles.picker}>
         {exercises.map((exercise, index) => (
           <Picker.Item
