@@ -193,10 +193,13 @@ const ExercisesScreen = ({navigation}) => {
       <Picker
         selectedValue={selectedExercise}
         onValueChange={itemValue => {
+          // This finds the exercise object based on the selected value
           const exerciseObject = exercises.find(
             exercise => exercise.value === itemValue,
           );
-          setExercise(exerciseObject);
+          console.log('Found exercise object: ', exerciseObject);
+          // Set the selectedExercise state to the value of the selected exercise
+          setExercise(itemValue);
         }} //
         style={styles.picker}>
         {exercises.map((exercise, index) => (
@@ -212,7 +215,9 @@ const ExercisesScreen = ({navigation}) => {
         style={styles.button}
         onPress={() =>
           navigation.navigate('Log Workout', {
-            selectedExercise: selectedExercise,
+            selectedExercise: exercises.find(
+              ex => ex.value === selectedExercise,
+            ),
           })
         }>
         <Text style={styles.buttonText}>Add to Workout</Text>

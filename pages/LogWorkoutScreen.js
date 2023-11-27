@@ -20,7 +20,11 @@ const LogWorkoutScreen = ({route, navigation}) => {
         name: route.params.selectedExercise.label,
         sets: [],
       };
-      setExercises(prevExercises => [...prevExercises, newExercise]);
+      setExercises(prevExercises => {
+        const updatedExercises = [...prevExercises, newExercise];
+        console.log('Updated Exercises:', updatedExercises);
+        return updatedExercises;
+      });
     }
   }, [route.params?.selectedExercise]);
 
