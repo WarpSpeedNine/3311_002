@@ -1,18 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {db} from '../DB';
 
 export function Calendar() {
   // State for calendar
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [workoutDetails, setWorkoutDetails] = useState(null);
+  const [databaseInstance, setDatabaseInstance] = useState(null);
 
-  // Sample data for previous workouts
-  const workouts = {
-    '2023-10-11': 'Cardio, 30 mins',
-    '2023-10-13': 'Weight lifting, 1 hr',
-    '2023-10-16': ' Squat , Calf Raises , Romanian dead-lift',
-    '2023-10-17': 'Biceps Curl , Hammer Curl , Triceps Kickback',
-  };
+  useEffect(() => {
+    const loadDatabaseAsync = async () => {
+      try {
+        const dbInstance = await db.open();
+        setDatabaseInstance(dbInstance);
+      } catch (error) {
+        console.error('Error opening database:', error);
+      }
+    };
+
+    loadDatabaseAsync();
+
+    return () => {
+      if (databaseInstance) {
+        databaseInstance.close().catch(error => {
+          console.error('Error closing the database', error);
+        });
+      }
+    };
+  }, []);
 
   function getFormattedDate(date) {
     const monthNames = [
@@ -34,17 +50,100 @@ export function Calendar() {
     return `${month} ${year}`;
   }
 
+  const fetchWorkoutDetails = async (date) => {
+  try {
+    const dbInstance = await db.open();
+    const entryID = await queryCalendarEntriesForDate(dbInstance, date);
+
+    let workoutDetails = null;
+    if (entryID) {      
+      workoutDetails = await queryLoggedWorkoutsForEntry(dbInstance, entryID);
+    }
+
+    dbInstance.close();
+    return workoutDetails;
+  } catch (error) {
+    console.error('Error fetching workout details:', error);
+    return null; 
+  }
+};
+
   const daysInMonth = new Date(
     currentMonth.getFullYear(),
     currentMonth.getMonth() + 1,
     0,
   ).getDate();
 
-  const handleDayClick = day => {
-    const dateStr = `${currentMonth.getFullYear()}-${String(
-      currentMonth.getMonth() + 1,
-    ).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    setSelectedDate(workouts[dateStr] ? dateStr : null);
+  const handleDayClick = async (day) => {
+    // Format the date string as YYYY-MM-DD
+    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  
+    // Fetch workout details for the formatted date
+    const details = await fetchWorkoutDetails(dateStr);
+    setWorkoutDetails(details); // Set the fetched details in state
+    setSelectedDate(dateStr);   // Update the selected date state
+  };
+
+  const queryCalendarEntriesForDate = async (databaseInstance, date) => {
+    try {
+      const data = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            'SELECT EntryID FROM CalendarEntries WHERE EntryDate = ?',
+            [date],
+            (_, results) => {
+              if (results.rows.length > 0) {
+                
+                const entryID = results.rows.item(0).EntryID;
+                resolve(entryID);
+              } else {
+                resolve(null); // If no Workout exists for selected day
+              }
+            },
+            (_, error) => {
+              reject(error);
+            }
+          );
+        });
+      });
+      return data;
+    } catch (error) {
+      console.error('Error querying CalendarEntries:', error);
+      throw error; 
+    }
+  };
+
+  const queryLoggedWorkoutsForEntry = async (databaseInstance, entryID) => {
+    try {
+      const query = `
+        SELECT LW.SetNumber, LW.Repetitions, LW.Weight, E.Name as ExerciseName
+        FROM LoggedWorkouts LW
+        JOIN Exercises E ON LW.ExerciseID = E.ID
+        WHERE LW.CalendarEntryID = ?
+        ORDER BY LW.ExerciseID, LW.SetNumber`;
+  
+      const loggedWorkouts = await new Promise((resolve, reject) => {
+        databaseInstance.transaction(tx => {
+          tx.executeSql(
+            query,
+            [entryID],
+            (_, results) => {
+              const rows = results.rows.raw();
+              resolve(rows);
+            },
+            (_, error) => {
+              reject(error);
+              return false;
+            }
+          );
+        });
+      });
+  
+      return loggedWorkouts;
+    } catch (error) {
+      console.error('Error querying LoggedWorkouts for EntryID:', error);
+      return null; // or appropriate error handling
+    }
   };
 
   return (
@@ -81,14 +180,7 @@ export function Calendar() {
             <TouchableOpacity
               key={idx}
               onPress={() => handleDayClick(day)}
-              style={[
-                styles.day,
-                {
-                  backgroundColor: workouts[dateStr]
-                    ? '#76afcfb0'
-                    : '#872a4cc6',
-                },
-              ]}>
+              style={styles.day}>
               <Text>{day}</Text>
             </TouchableOpacity>
           );
@@ -96,17 +188,17 @@ export function Calendar() {
       </View>
 
       <View style={styles.workoutData}>
-        {selectedDate && (
+        {selectedDate && workoutDetails && (
           <View>
             <Text>Workout for {selectedDate}:</Text>
-            <Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {workouts[selectedDate].split(',')[0]}
+            {workoutDetails.map((workout, index) => (
+              <Text key={index}>
+                <Text style={{ fontWeight: 'bold' }}>{workout.ExerciseName}</Text>
+                <Text> - Set {workout.SetNumber}, {workout.Repetitions} reps, {workout.Weight} lbs</Text>
               </Text>
-              <Text>{workouts[selectedDate].split(',')[1].trim()}</Text>
-            </Text>
+            ))}
           </View>
-        )}
+          )}
       </View>
     </View>
   );
@@ -133,6 +225,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderColor: '#76afcfb0',
+    backgroundColor: '#bfe0f9',
   },
   contentContainer: {
     flexDirection: 'column',
