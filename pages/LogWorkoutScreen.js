@@ -69,7 +69,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
           <Text style={styles.exerciseText}>{exercise.name}</Text>
           {exercise.sets.map((set, setIndex) => (
             <View key={setIndex} style={styles.setContainer}>
-              <Text>Set {set.setId}: </Text>
+              <Text style={styles.setText}>Set {set.setId}: </Text>
               <TextInput
                 placeholder="Weight"
                 value={set.weight}
@@ -132,12 +132,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   exerciseText: {
+    // This is the formatting for selected Exercises as they appear on Log Workout Screen
     color: '#FFA500',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15, // Some space between exercises
   },
   input: {
+    // This is for the text fields where reps/weight is entered
     borderWidth: 1,
     borderColor: '#FFA500',
     color: '#FFFFFF', // White color for the text
@@ -150,6 +152,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Aligns the set details horizontally
     alignItems: 'center', // Centers items vertically within the row
     marginVertical: 5, // Adds vertical margin for each set row
+  },
+  setText: {
+    color: '#FFFFFF', // White color
+    fontSize: 16,
+    marginRight: 5, // Add some space before the input fields
   },
 });
 
