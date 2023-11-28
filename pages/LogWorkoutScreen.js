@@ -112,6 +112,36 @@ const LogWorkoutScreen = ({route, navigation}) => {
     });
   };
 
+  const insertIntoLoggedWorkouts = async (
+    dbInstance,
+    entryID,
+    exerciseID,
+    setNumber,
+    repetitions,
+    weight,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const query =
+        'INSERT INTO LoggedWorkouts (CalendarEntryID, ExerciseID, SetNumber, Repetitions, Weight) VALUES (?, ?, ?, ?, ?)';
+      const params = [entryID, exerciseID, setNumber, repetitions, weight];
+
+      dbInstance.transaction(tx => {
+        tx.executeSql(
+          query,
+          params,
+          (_, results) => {
+            console.log('Inserted into LoggedWorkouts:', results);
+            resolve();
+          },
+          (_, error) => {
+            console.error('Error inserting into LoggedWorkouts:', error);
+            reject(error);
+          },
+        );
+      });
+    });
+  };
+
   const saveWorkout = async () => {
     // Make sure the database is open
     if (!databaseInstance) {
@@ -125,21 +155,22 @@ const LogWorkoutScreen = ({route, navigation}) => {
 
       // For each exercise, insert its sets into LoggedWorkouts
       for (const exercise of exercises) {
-        for (const set of exercise.sets) {
+        for (const [index, set] of exercise.sets.entries()) {
           await insertIntoLoggedWorkouts(
             databaseInstance,
             entryID,
             exercise.id,
-            set.setId,
+            index + 1, // Set number (assuming it starts from 1)
             set.reps,
             set.weight,
           );
         }
       }
 
-      // Handle successful save (e.g., navigate to a different screen or show a success message)
+      // Handle successful save
       navigation.navigate('Workout Saved');
     } catch (error) {
+      // Handle errors
       console.error('Error saving workout:', error);
       Alert.alert('Error', 'Failed to save workout.');
     }
@@ -186,9 +217,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
       {hasSetsAdded() && (
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Workout Saved')}>
+        <TouchableOpacity style={styles.button} onPress={saveWorkout}>
           <Text style={styles.buttonText}>Log Workout</Text>
         </TouchableOpacity>
       )}
