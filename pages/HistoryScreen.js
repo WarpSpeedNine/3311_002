@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Calendar} from '../src/Calendar';
 
@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   plainText: {
-    color: '#00008b', // Dark blue
+    color: '#FFA500', // Hi-vis Orange
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 15, // Margin at the bottom of text
   },
 });
 

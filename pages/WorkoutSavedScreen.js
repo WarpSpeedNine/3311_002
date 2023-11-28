@@ -1,32 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-// Component for Routines Screen with 3 main buttons
-const RoutinesScreen = ({navigation}) => {
+/* Creates Workout Saved Screen component with three main buttons */
+const WorkoutSavedScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>ROUTINES</Text>
+      <Text style={styles.header}>WORKOUT SAVED!!</Text>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('My Routines(notcreated)')}>
-        <Text style={styles.buttonText}>My Routines</Text>
+        onPress={() => navigation.navigate('New Routine Screen(notcreated)')}>
+        <Text style={styles.buttonText}>Save Routine</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Pre-built Routines(notcreated)')}>
-        <Text style={styles.buttonText}>Premade</Text>
+        onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('New Routines(notcreated)')}>
-        <Text style={styles.buttonText}>New Routines</Text>
+        onPress={() => navigation.navigate('History')}>
+        <Text style={styles.buttonText}>Calendar</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-// Stylesheet components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -34,6 +33,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 50,
+  },
+  plainText: {
+    color: '#FFA500', // Hi-vis Orange
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
   header: {
     fontSize: 36,
@@ -59,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoutinesScreen;
+export default WorkoutSavedScreen;

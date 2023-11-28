@@ -7,10 +7,14 @@ import HistoryScreen from "./pages/HistoryScreen";
 import LogWorkoutScreen from './pages/LogWorkoutScreen';
 import RoutinesScreen from "./pages/RoutinesScreen";
 import ExercisesScreen from './pages/ExercisesScreen';
+import WorkoutSavedScreen from './pages/WorkoutSavedScreen';
 
 const Stack = createStackNavigator();
 
 function App() {
+  // Safe area provider is to make sure everything renders within device borders
+  // Nav container wraps everything within single structure
+  // Stack navigator sets up stack for screens for navigation, with each screen defined individually
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -20,10 +24,11 @@ function App() {
           <Stack.Screen name="Log Workout" component={LogWorkoutScreen} />
           <Stack.Screen name="Routines" component={RoutinesScreen} />
           <Stack.Screen name="Exercises" component={ExercisesScreen} />
+          <Stack.Screen name="Workout Saved" component={WorkoutSavedScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
-} // View rendering with title and content available
+}
 
 export default App;
