@@ -90,6 +90,61 @@ const LogWorkoutScreen = ({route, navigation}) => {
     });
   };
 
+  const insertIntoCalendarEntries = async dbInstance => {
+    return new Promise((resolve, reject) => {
+      dbInstance.transaction(tx => {
+        // Transaction to Insert New Calendar Entry
+        tx.executeSql(
+          `INSERT INTO CalendarEntries (EntryDate, RoutineID, Comments) VALUES (CURRENT_DATE, NULL, 'Today''s Workout');`,
+          [],
+          (_, results) => {
+            console.log('Inserted into CalendarEntries:', results);
+            const lastInsertedId = results.insertId;
+            resolve(lastInsertedId);
+          },
+          (_, error) => {
+            console.error('Error inserting into CalendarEntries', error);
+            reject(error);
+            return false;
+          },
+        );
+      });
+    });
+  };
+
+  const saveWorkout = async () => {
+    // Make sure the database is open
+    if (!databaseInstance) {
+      console.error('Database is not open');
+      return;
+    }
+
+    try {
+      // Insert into CalendarEntries and get the EntryID
+      const entryID = await insertIntoCalendarEntries(databaseInstance);
+
+      // For each exercise, insert its sets into LoggedWorkouts
+      for (const exercise of exercises) {
+        for (const set of exercise.sets) {
+          await insertIntoLoggedWorkouts(
+            databaseInstance,
+            entryID,
+            exercise.id,
+            set.setId,
+            set.reps,
+            set.weight,
+          );
+        }
+      }
+
+      // Handle successful save (e.g., navigate to a different screen or show a success message)
+      navigation.navigate('Workout Saved');
+    } catch (error) {
+      console.error('Error saving workout:', error);
+      Alert.alert('Error', 'Failed to save workout.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {exercises.map((exercise, index) => (
