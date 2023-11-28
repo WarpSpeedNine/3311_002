@@ -51,22 +51,23 @@ export function Calendar() {
   }
 
   const fetchWorkoutDetails = async (date) => {
-  try {
-    const dbInstance = await db.open();
-    const entryID = await queryCalendarEntriesForDate(dbInstance, date);
-
-    let workoutDetails = null;
-    if (entryID) {      
-      workoutDetails = await queryLoggedWorkoutsForEntry(dbInstance, entryID);
+    if (!databaseInstance) {
+      console.error('Database is not open');
+      return;
     }
-
-    dbInstance.close();
-    return workoutDetails;
-  } catch (error) {
-    console.error('Error fetching workout details:', error);
-    return null; 
-  }
-};
+  
+    try {
+      const entryID = await queryCalendarEntriesForDate(databaseInstance, date);
+      let workoutDetails = null;
+      if (entryID) {      
+        workoutDetails = await queryLoggedWorkoutsForEntry(databaseInstance, entryID);
+      }
+      return workoutDetails;
+    } catch (error) {
+      console.error('Error fetching workout details:', error);
+      return null; 
+    }
+  };
 
   const daysInMonth = new Date(
     currentMonth.getFullYear(),
