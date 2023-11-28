@@ -57,12 +57,14 @@ export function Calendar() {
     }
   
     try {
-      const entryID = await queryCalendarEntriesForDate(databaseInstance, date);
-      let workoutDetails = null;
-      if (entryID) {      
-        workoutDetails = await queryLoggedWorkoutsForEntry(databaseInstance, entryID);
+      const entryIDs = await queryCalendarEntriesForDate(databaseInstance, date);
+      let allWorkoutDetails = [];
+      
+      for (const entryID of entryIDs) {
+        const workoutDetails = await queryLoggedWorkoutsForEntry(databaseInstance, entryID);
+        allWorkoutDetails.push(...workoutDetails);
       }
-      return workoutDetails;
+      return allWorkoutDetails;
     } catch (error) {
       console.error('Error fetching workout details:', error);
       return null; 
@@ -93,13 +95,11 @@ export function Calendar() {
             'SELECT EntryID FROM CalendarEntries WHERE EntryDate = ?',
             [date],
             (_, results) => {
-              if (results.rows.length > 0) {
-                
-                const entryID = results.rows.item(0).EntryID;
-                resolve(entryID);
-              } else {
-                resolve(null); // If no Workout exists for selected day
+              let entryIDs = [];
+              for (let i = 0; i < results.rows.length; i++) {
+                entryIDs.push(results.rows.item(i).EntryID);
               }
+              resolve(entryIDs);
             },
             (_, error) => {
               reject(error);
