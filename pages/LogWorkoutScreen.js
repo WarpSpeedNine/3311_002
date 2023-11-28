@@ -70,6 +70,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
           {exercise.sets.map((set, setIndex) => (
             <View key={setIndex} style={styles.setContainer}>
               <Text style={styles.setText}>Set {set.setId}: </Text>
+              <Text style={styles.labelText}>Weight: </Text>
               <TextInput
                 placeholder="Weight"
                 value={set.weight}
@@ -78,6 +79,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
                 }
                 style={styles.input}
               />
+              <Text style={styles.labelText}>Reps: </Text>
               <TextInput
                 placeholder="Reps"
                 value={set.reps}
@@ -157,6 +159,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF', // White color
     fontSize: 16,
     marginRight: 5, // Add some space before the input fields
+  },
+  labelText: {
+    color: '#FFFFFF', // White color for visibility against the black background
+    marginRight: 5, // Space between label and input field
+    fontSize: 16, // Size of the label text
   },
 });
 
