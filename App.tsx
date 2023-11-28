@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,7 +12,9 @@ import WorkoutSavedScreen from './pages/WorkoutSavedScreen';
 const Stack = createStackNavigator();
 
 function App() {
-
+  // Safe area provider is to make sure everything renders within device borders
+  // Nav container wraps everything within single structure
+  // Stack navigator sets up stack for screens for navigation, with each screen defined individually
   return (
     <SafeAreaProvider>
       <NavigationContainer>

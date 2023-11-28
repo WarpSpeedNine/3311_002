@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
+// Component for Routines Screen with 3 main buttons
 const RoutinesScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
@@ -25,6 +26,7 @@ const RoutinesScreen = ({navigation}) => {
   );
 };
 
+// Stylesheet components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -32,12 +34,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 50,
-  },
-  plainText: {
-    color: '#FFA500', // Dark blue
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
   },
   header: {
     fontSize: 36,

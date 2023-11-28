@@ -28,8 +28,9 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
+// Define all styles used above
 const styles = StyleSheet.create({
-  /* Creates Various styles reffered in this page */
+  /* Creates Various styles referred to in this page */
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     borderColor: '#FFA500',
   },
   buttonText: {
-    color: '#FFA500',
+    color: '#FFA500', // Hi-vis orange
     fontSize: 25,
     fontWeight: 'bold',
   },

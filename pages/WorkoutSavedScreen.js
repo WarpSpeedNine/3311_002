@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
+/* Creates Workout Saved Screen component with three main buttons */
 const WorkoutSavedScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   plainText: {
-    color: '#FFA500', // Dark blue
+    color: '#FFA500', // Hi-vis Orange
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,

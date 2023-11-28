@@ -9,17 +9,16 @@ import {
 import {db} from '../DB';
 
 const LogWorkoutScreen = ({route, navigation}) => {
-  /* Basic Log Workout Screen Component using navigation component */
+  // States to manage exercises and DB
   const [exercises, setExercises] = useState([]); // State to hold selected exercises, future function to add to list
-  const [currentSets, setCurrentSets] = useState([]);
   const [databaseInstance, setDatabaseInstance] = useState(null);
 
+  // DB initialization
   useEffect(() => {
     const loadDatabaseAsync = async () => {
       try {
         const dbInstance = await db.open();
         setDatabaseInstance(dbInstance);
-        // Come back and put Fetch Functions here if needed
       } catch (error) {
         console.error('Error opening database:', error);
       }
@@ -36,8 +35,9 @@ const LogWorkoutScreen = ({route, navigation}) => {
     };
   }, []);
 
+  // Effect to update exercises based on route parameters
   useEffect(() => {
-    console.log('Received params:', route.params);
+    console.log('Received params:', route.params); // Used for Error Checking
     if (route.params?.selectedExercise) {
       const newExercise = {
         id: route.params.selectedExercise.value,
@@ -46,7 +46,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
       };
       setExercises(prevExercises => {
         const updatedExercises = [...prevExercises, newExercise];
-        console.log('Updated Exercises:', updatedExercises);
+        console.log('Updated Exercises:', updatedExercises); // Used for Error Checking
         return updatedExercises;
       });
     }
@@ -72,6 +72,8 @@ const LogWorkoutScreen = ({route, navigation}) => {
       });
     });
   };
+
+  // Function to handle user input for reps and weights
   const handleSetChange = (newValue, exerciseIndex, setIndex, field) => {
     setExercises(prevExercises => {
       const updatedExercises = prevExercises.map((exercise, index) => {
@@ -90,10 +92,10 @@ const LogWorkoutScreen = ({route, navigation}) => {
     });
   };
 
+  // Function to perform DB Insert statement into CalenderEntries table
   const insertIntoCalendarEntries = async dbInstance => {
     return new Promise((resolve, reject) => {
       dbInstance.transaction(tx => {
-        // Transaction to Insert New Calendar Entry
         tx.executeSql(
           `INSERT INTO CalendarEntries (EntryDate, RoutineID, Comments) VALUES (CURRENT_DATE, NULL, 'Today''s Workout');`,
           [],
@@ -112,6 +114,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
     });
   };
 
+  // Function to handle DB Insert statement for LoggedWorkouts Table
   const insertIntoLoggedWorkouts = async (
     dbInstance,
     entryID,
@@ -142,8 +145,8 @@ const LogWorkoutScreen = ({route, navigation}) => {
     });
   };
 
+  // Function to save workout to database
   const saveWorkout = async () => {
-    // Make sure the database is open
     if (!databaseInstance) {
       console.error('Database is not open');
       return;
@@ -160,7 +163,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
             databaseInstance,
             entryID,
             exercise.id,
-            index + 1, // Set number (assuming it starts from 1)
+            index + 1,
             set.reps,
             set.weight,
           );
@@ -176,6 +179,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
     }
   };
 
+  // Render UI
   return (
     <View style={styles.container}>
       {exercises.map((exercise, index) => (
@@ -216,7 +220,7 @@ const LogWorkoutScreen = ({route, navigation}) => {
         onPress={() => navigation.navigate('Exercises')}>
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
-      {hasSetsAdded() && (
+      {hasSetsAdded() && ( // Log Workout Button appears when sets have been added
         <TouchableOpacity style={styles.button} onPress={saveWorkout}>
           <Text style={styles.buttonText}>Log Workout</Text>
         </TouchableOpacity>
@@ -230,15 +234,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     alignItems: 'center',
-  },
-  containerStart: {
-    // REMOVE IF NOT USED
-    justifyContent: 'flex-start', // aligns children to the top
-    paddingTop: 50, // some padding from the top
-  },
-  containerCenter: {
-    // REMOVE IF NOT USED
-    justifyContent: 'center', // centers children on vertical axis, in center not at top
   },
   button: {
     backgroundColor: 'transparent',

@@ -4,7 +4,7 @@ import {Picker} from '@react-native-picker/picker';
 import {db} from '../DB';
 
 const ExercisesScreen = ({navigation}) => {
-  /* Creates ExercisesScreen Component */
+  //States for managing user choices and DB
   const [selectedType, setType] = useState(null);
   const [selectedMuscleGroup, setMuscleGroup] = useState(null);
   const [selectedExercise, setExercise] = useState(null);
@@ -13,9 +13,8 @@ const ExercisesScreen = ({navigation}) => {
   const [exercises, setExercises] = useState([]);
   const [databaseInstance, setDatabaseInstance] = useState(null);
 
+  // DB initialization
   useEffect(() => {
-    // let databaseInstance;
-
     const loadDatabaseAsync = async () => {
       try {
         const dbInstance = await db.open();
@@ -38,6 +37,7 @@ const ExercisesScreen = ({navigation}) => {
     };
   }, []);
 
+  // Effect for fetching exercises based on type/muscle group
   useEffect(() => {
     const fetchExercisesIfSelected = async () => {
       console.log(
@@ -60,6 +60,7 @@ const ExercisesScreen = ({navigation}) => {
     fetchExercisesIfSelected();
   }, [selectedType, selectedMuscleGroup, databaseInstance]);
 
+  // Function to perform Query to populate 1st drop down
   const fetchTypes = async databaseInstance => {
     try {
       const data = await new Promise((resolve, reject) => {
@@ -91,6 +92,7 @@ const ExercisesScreen = ({navigation}) => {
     }
   };
 
+  // Function to perform query for 2nd drop down
   const fetchMuscleGroups = async databaseInstance => {
     try {
       const data = await new Promise((resolve, reject) => {
@@ -122,13 +124,14 @@ const ExercisesScreen = ({navigation}) => {
     }
   };
 
+  // Filter 3rd drop down based on selection from first two drop downs
   const fetchFilteredExercises = async (
     databaseInstance,
     selectedType,
     selectedMuscleGroup,
   ) => {
     try {
-      console.log('fetch Filtered Exercises function is called now.');
+      console.log('Fetch Filtered Exercises function is called now.');
       const data = await new Promise((resolve, reject) => {
         databaseInstance.transaction(tx => {
           tx.executeSql(
@@ -143,7 +146,7 @@ const ExercisesScreen = ({navigation}) => {
                   value: rows[i].ID,
                 });
               }
-              console.log('Fetched Exercises:', newExercises); // Remove Later if necessary
+              console.log('Fetched Exercises:', newExercises); // Used for error monitering
               resolve(newExercises);
             },
             (_, error) => {
@@ -154,7 +157,7 @@ const ExercisesScreen = ({navigation}) => {
         });
       });
       setExercises(data);
-      console.log('Updated Exercises State:', exercises); // Remove Later if necessary
+      console.log('Updated Exercises State:', exercises); // Used for error/functionality checking
     } catch (error) {
       console.error(
         'Error fetching filtered exercises from the database',
@@ -163,13 +166,7 @@ const ExercisesScreen = ({navigation}) => {
     }
   };
 
-  /*
-  // Temproary Data For Testing Drop Downs
-  const types = ['Free Weights', 'Machine', 'Calisthenic', 'All'];
-  const muscleGroups = ['Arms', 'Chest', 'Legs', 'Back'];
-  const exercises = ['Exercise 1', 'Exercise 2', 'Exercise 3'];
-*/
-
+  // Render Drop Down Menus and Buttons
   return (
     <View style={styles.container}>
       <Picker
@@ -180,7 +177,6 @@ const ExercisesScreen = ({navigation}) => {
           <Picker.Item key={index} label={type.label} value={type.value} />
         ))}
       </Picker>
-
       <Picker
         selectedValue={selectedMuscleGroup}
         onValueChange={(itemValue, itemIndex) => setMuscleGroup(itemValue)}
@@ -200,7 +196,7 @@ const ExercisesScreen = ({navigation}) => {
           console.log('Found exercise object: ', exerciseObject);
           // Set the selectedExercise state to the value of the selected exercise
           setExercise(itemValue);
-        }} //
+        }}
         style={styles.picker}>
         {exercises.map((exercise, index) => (
           <Picker.Item
@@ -238,7 +234,7 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 10,
     fontWeight: 'bold',
-    color: '#FFA500',
+    color: '#FFA500', // Hi-vis Orange color
   },
   button: {
     backgroundColor: 'transparent',
@@ -251,7 +247,7 @@ const styles = StyleSheet.create({
     borderColor: '#FFA500',
   },
   buttonText: {
-    color: '#FFA500', // Dark blue
+    color: '#FFA500',
     fontSize: 25,
     fontWeight: 'bold',
   },

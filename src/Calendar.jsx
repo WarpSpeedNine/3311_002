@@ -3,12 +3,14 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {db} from '../DB';
 
 export function Calendar() {
-  // State for calendar
+  
+  // State for current month, selected date, workout details, and database instance
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [workoutDetails, setWorkoutDetails] = useState(null);
   const [databaseInstance, setDatabaseInstance] = useState(null);
 
+  // Initialize and handle database connection
   useEffect(() => {
     const loadDatabaseAsync = async () => {
       try {
@@ -30,6 +32,9 @@ export function Calendar() {
     };
   }, []);
 
+  //Functions
+
+  // Get formatted date string using array
   function getFormattedDate(date) {
     const monthNames = [
       'January',
@@ -50,16 +55,17 @@ export function Calendar() {
     return `${month} ${year}`;
   }
 
+  // Fetch Workout Details for selected date
   const fetchWorkoutDetails = async (date) => {
     if (!databaseInstance) {
       console.error('Database is not open');
       return;
-    }
-  
+    }  
     try {
       const entryIDs = await queryCalendarEntriesForDate(databaseInstance, date);
       let allWorkoutDetails = [];
       
+      // Get workout details based on each EntryID
       for (const entryID of entryIDs) {
         const workoutDetails = await queryLoggedWorkoutsForEntry(databaseInstance, entryID);
         allWorkoutDetails.push(...workoutDetails);
@@ -71,12 +77,14 @@ export function Calendar() {
     }
   };
 
+  // Calculate # of days in month
   const daysInMonth = new Date(
     currentMonth.getFullYear(),
     currentMonth.getMonth() + 1,
     0,
   ).getDate();
 
+  // Handle when user clicks given day on Calendar
   const handleDayClick = async (day) => {
     // Format the date string as YYYY-MM-DD
     const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -87,6 +95,7 @@ export function Calendar() {
     setSelectedDate(dateStr);   // Update the selected date state
   };
 
+  // Query DB to get Calendar Entries
   const queryCalendarEntriesForDate = async (databaseInstance, date) => {
     try {
       const data = await new Promise((resolve, reject) => {
@@ -114,6 +123,7 @@ export function Calendar() {
     }
   };
 
+  // Query DB to get data associated with particular date
   const queryLoggedWorkoutsForEntry = async (databaseInstance, entryID) => {
     try {
       const query = `
@@ -140,10 +150,11 @@ export function Calendar() {
         });
       });
   
+      // Render Calender UI
       return loggedWorkouts;
     } catch (error) {
       console.error('Error querying LoggedWorkouts for EntryID:', error);
-      return null; // or appropriate error handling
+      return null; 
     }
   };
 
@@ -226,7 +237,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderColor: '#76afcfb0',
-    backgroundColor: '#bfe0f9',
+    backgroundColor: '#bfe0f9', 
   },
   contentContainer: {
     flexDirection: 'column',
