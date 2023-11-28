@@ -6,11 +6,35 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {db} from '../DB';
 
 const LogWorkoutScreen = ({route, navigation}) => {
   /* Basic Log Workout Screen Component using navigation component */
   const [exercises, setExercises] = useState([]); // State to hold selected exercises, future function to add to list
   const [currentSets, setCurrentSets] = useState([]);
+  const [databaseInstance, setDatabaseInstance] = useState(null);
+
+  useEffect(() => {
+    const loadDatabaseAsync = async () => {
+      try {
+        const dbInstance = await db.open();
+        setDatabaseInstance(dbInstance);
+        // Come back and put Fetch Functions here if needed
+      } catch (error) {
+        console.error('Error opening database:', error);
+      }
+    };
+
+    loadDatabaseAsync();
+
+    return () => {
+      if (databaseInstance) {
+        databaseInstance.close().catch(error => {
+          console.error('Error closing the database', error);
+        });
+      }
+    };
+  }, []);
 
   useEffect(() => {
     console.log('Received params:', route.params);
