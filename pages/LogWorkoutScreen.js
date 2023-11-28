@@ -28,6 +28,10 @@ const LogWorkoutScreen = ({route, navigation}) => {
     }
   }, [route.params?.selectedExercise]);
 
+  // Function to check whether their is a workout to save and thus populate Log Workout Button
+  const hasSetsAdded = () => {
+    return exercises.some(exercise => exercise.sets.length > 0);
+  };
   // Function to add a new set to the current exercise
   const addSet = exerciseIndex => {
     setExercises(prevExercises => {
@@ -72,7 +76,8 @@ const LogWorkoutScreen = ({route, navigation}) => {
               <Text style={styles.setText}>Set {set.setId}: </Text>
               <Text style={styles.labelText}>Weight: </Text>
               <TextInput
-                placeholder="Weight"
+                placeholder="0"
+                placeholderTextColor="#888888"
                 value={set.weight}
                 onChangeText={text =>
                   handleSetChange(text, index, setIndex, 'weight')
@@ -81,7 +86,8 @@ const LogWorkoutScreen = ({route, navigation}) => {
               />
               <Text style={styles.labelText}>Reps: </Text>
               <TextInput
-                placeholder="Reps"
+                placeholder="0"
+                placeholderTextColor="#888888"
                 value={set.reps}
                 onChangeText={text =>
                   handleSetChange(text, index, setIndex, 'reps')
@@ -100,6 +106,13 @@ const LogWorkoutScreen = ({route, navigation}) => {
         onPress={() => navigation.navigate('Exercises')}>
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
+      {hasSetsAdded() && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Workout Saved')}>
+          <Text style={styles.buttonText}>Log Workout</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

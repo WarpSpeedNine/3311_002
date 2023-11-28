@@ -7,6 +7,7 @@ import HistoryScreen from "./pages/HistoryScreen";
 import LogWorkoutScreen from './pages/LogWorkoutScreen';
 import RoutinesScreen from "./pages/RoutinesScreen";
 import ExercisesScreen from './pages/ExercisesScreen';
+import WorkoutSavedScreen from './pages/WorkoutSavedScreen';
 import RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
 
@@ -55,6 +56,7 @@ function App() {
           <Stack.Screen name="Log Workout" component={LogWorkoutScreen} />
           <Stack.Screen name="Routines" component={RoutinesScreen} />
           <Stack.Screen name="Exercises" component={ExercisesScreen} />
+          <Stack.Screen name="Workout Saved" component={WorkoutSavedScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
